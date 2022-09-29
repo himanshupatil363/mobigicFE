@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 const Register = () => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const [reenter, setReenter] = useState();
   const [err, setErr] = useState();
   const handleRegister = ({ setIsAuthenticated }) => {
     axios
@@ -41,8 +42,8 @@ const Register = () => {
         <p className="mt-3 text-lg">Reenter password</p>
         <input
           className="rounded my-1 border md:w-72 p-2"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={reenter}
+          onChange={(e) => setReenter(e.target.value)}
           type="password"
         />
         <div className="text-red-400">{err}</div>
@@ -54,7 +55,14 @@ const Register = () => {
         <div className="flex w-full justify-center">
           <button
             className="mt-6 bg-blue-800 text-white px-8 rounded py-2"
-            onClick={handleRegister}
+            onClick={() => {
+              if (password == reenter) {
+                setErr();
+                handleRegister();
+              } else {
+                setErr("Password mismatch");
+              }
+            }}
           >
             Register
           </button>
